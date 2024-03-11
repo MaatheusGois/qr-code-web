@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
+<body>
+
+    <div id="qrcode"></div>
+
+    <script>
+        // Função para obter parâmetros da URL
+        function obterParametroURL(nome) {
+            nome = nome.replace(/[[]/, "\\[").replace(/[]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + nome + "=([^&#]*)");
+            var resultados = regex.exec(location.search);
+            return resultados === null ? "" : decodeURIComponent(resultados[1].replace(/\+/g, " "));
+        }
+
+        // Obter o parâmetro 'url' da URL
+        var urlParametro = obterParametroURL('url');
+
+        // Verificar se o parâmetro 'url' está presente
+        if (urlParametro !== "") {
+            // Criar um objeto QRCode com o link fornecido
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                text: urlParametro,
+                width: 128,
+                height: 128
+            });
+        } else {
+            // Se o parâmetro 'url' não estiver presente, exibir uma mensagem de erro
+            document.getElementById("qrcode").innerHTML = "Parâmetro 'url' ausente na URL.";
+        }
+    </script>
+
+</body>
+</html>
